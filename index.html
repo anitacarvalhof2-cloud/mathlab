@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#fff9f0">
+<title>MathLab — Matemática de um jeito visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --cream:#FFF9F0;--ink:#34313D;--muted:#716d79;--lilac:#DCD2F5;--pink:#F5DCE7;
+ --green:#D8EBDD;--blue:#D8EAF5;--purple:#8066B5;--line:#e9e2ec;--white:#fff;
+ --shadow:0 12px 35px rgba(70,54,90,.08);--radius:22px
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:"Nunito Sans",sans-serif;line-height:1.65}
+button,a{font:inherit}a{color:inherit}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
+header{position:sticky;top:0;z-index:20;background:rgba(255,249,240,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(220,210,245,.65)}
+.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font:800 1.45rem Poppins,sans-serif;letter-spacing:-1px;text-decoration:none}.logo span{color:var(--purple)}
+nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}nav a{text-decoration:none;padding:9px 13px;border-radius:999px;font-weight:800;font-size:.92rem;color:#5d5866}nav a:hover,nav a.active{background:var(--lilac);color:#45375f}
+.menu-btn{display:none;border:0;background:var(--lilac);border-radius:12px;padding:9px 13px;font-weight:800}
+.hero{padding:76px 0 64px;overflow:hidden}.hero-grid{display:grid;grid-template-columns:1.12fr .88fr;align-items:center;gap:35px}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;background:var(--green);padding:7px 13px;border-radius:999px;font-size:.82rem;font-weight:800;color:#45634e}
+h1,h2,h3{font-family:Poppins,sans-serif;line-height:1.2;letter-spacing:-.7px}h1{font-size:clamp(2.6rem,6vw,4.5rem);margin:18px 0}h1 em{font-style:normal;color:var(--purple)}.hero p{font-size:1.13rem;color:var(--muted);max-width:570px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:12px 19px;border:0;border-radius:14px;background:var(--purple);color:white;text-decoration:none;font-weight:800;cursor:pointer;transition:.2s}.btn:hover{transform:translateY(-2px);filter:brightness(.97)}.btn.secondary{background:var(--white);color:var(--ink);border:1px solid var(--line)}
+.art{min-height:340px;border-radius:34px;background:linear-gradient(140deg,var(--lilac),var(--pink));position:relative;display:grid;place-items:center;overflow:hidden}
+.art:before,.art:after{content:"";position:absolute;border:2px solid rgba(255,255,255,.7);border-radius:50%}.art:before{width:280px;height:280px}.art:after{width:210px;height:210px}
+.math-art{position:relative;z-index:1;width:78%;max-width:390px;filter:drop-shadow(0 12px 10px rgba(65,48,90,.12))}
+section{padding:58px 0;scroll-margin-top:85px}.section-head{max-width:700px;margin-bottom:28px}.kicker{color:var(--purple);font-size:.8rem;font-weight:900;text-transform:uppercase;letter-spacing:1.4px}h2{font-size:clamp(1.8rem,4vw,2.65rem);margin:8px 0 12px}.section-head p,.muted{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.topic-card{padding:22px;border-radius:var(--radius);min-height:220px;display:flex;flex-direction:column;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.8)}
+.topic-card:nth-child(1){background:var(--lilac)}.topic-card:nth-child(2){background:var(--pink)}.topic-card:nth-child(3){background:var(--green)}.topic-card:nth-child(4){background:var(--blue)}
+.topic-icon{font-size:2rem}.topic-card h3{font-size:1.12rem;margin:14px 0 7px}.topic-card p{margin:0 0 16px;font-size:.93rem;color:#5f5a67}.topic-card button{margin-top:auto;align-self:flex-start;background:rgba(255,255,255,.7);border:0;border-radius:12px;padding:9px 13px;font-weight:900;cursor:pointer}
+.content-area{background:#fff;border:1px solid var(--line);border-radius:26px;padding:clamp(18px,4vw,34px);box-shadow:var(--shadow)}
+.topic-tabs{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:24px}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 15px;font-weight:800;cursor:pointer;color:var(--muted)}.tab[aria-selected="true"]{background:var(--lilac);border-color:var(--lilac);color:#493967}
+.topic-content h3{margin-top:24px}.topic-content p{color:#5e5965}.formula{display:inline-block;background:#f2eefb;border:1px solid #e5dcf6;border-radius:12px;padding:12px 16px;font:700 1.05rem Poppins,sans-serif;margin:8px 0}
+.example{background:#f8f5fc;border-left:4px solid var(--purple);padding:16px 18px;border-radius:0 14px 14px 0;margin:15px 0}.example strong{display:block;margin-bottom:5px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}.visual-box{background:#fbf9ff;border:1px solid var(--line);border-radius:18px;padding:16px}.visual-box svg{width:100%;height:auto;display:block}
+.geolink{display:inline-flex;margin-top:10px;color:#6b52a1;font-weight:900;text-decoration:none;border-bottom:1px solid #cfc1ec}
+.exercise-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.question{border:1px solid var(--line);border-radius:18px;padding:20px;background:#fff}.question h3{font-size:1.05rem;margin:0 0 12px}.answers{display:grid;gap:8px}.answers label{padding:10px 12px;border:1px solid var(--line);border-radius:12px;cursor:pointer}.answers label:has(input:checked){background:#f2eefb;border-color:#b9a8dc}.answers input{accent-color:var(--purple);margin-right:8px}.feedback{font-weight:800;margin:12px 0 0;min-height:26px}.feedback.good{color:#39764c}.feedback.bad{color:#a34b62}
+.daily{background:linear-gradient(120deg,#e6def8,#f9e6ee);border-radius:25px;padding:28px;display:flex;align-items:center;justify-content:space-between;gap:22px}.daily h3{margin:0 0 8px}.daily p{margin:0;color:#5e5868}
+.about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}.about-card{background:var(--green);padding:24px;border-radius:22px}.about-card.alt{background:var(--blue)}
+footer{padding:28px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}.footer-inner{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.small-note{font-size:.88rem;color:var(--muted)}
+#toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);background:#34313d;color:#fff;padding:11px 17px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:40}#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:850px){.cards{grid-template-columns:repeat(2,1fr)}.hero-grid{grid-template-columns:1fr  .85fr}.hero{padding-top:48px}}
+@media(max-width:650px){.wrap{width:min(100% - 28px,540px)}.menu-btn{display:block}nav{display:none;position:absolute;top:75px;left:14px;right:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow);flex-direction:column;align-items:stretch}nav.open{display:flex}nav a{padding:11px}.hero-grid,.two-col,.exercise-grid,.about-grid{grid-template-columns:1fr}.hero{padding:42px 0}.art{min-height:245px}.cards{gap:10px}.topic-card{padding:16px;min-height:215px}section{padding:42px 0}.daily{align-items:flex-start;flex-direction:column}.nav{min-height:68px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap nav">
+  <a class="logo" href="#inicio" aria-label="MathLab, início">Math<span>Lab</span> ✦</a>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mainNav">☰ Menu</button>
+  <nav id="mainNav" aria-label="Navegação principal">
+   <a href="#inicio" class="active">Início</a><a href="#conteudos">Conteúdos</a><a href="#exercicios">Exercícios</a><a href="#cotidiano">No cotidiano</a><a href="#sobre">Sobre</a>
+  </nav>
+ </div>
+</header>
+<main>
+<section class="hero" id="inicio">
+ <div class="wrap hero-grid">
+  <div>
+   <span class="eyebrow">✦ Matemática com criatividade</span>
+   <h1>Aprender matemática pode ser <em>mais leve.</em></h1>
+   <p>Explore conceitos, descubra fórmulas e pratique no seu ritmo. Um espaço para enxergar a matemática de um jeito visual, simples e conectado com o mundo.</p>
+   <div class="actions"><a class="btn" href="#conteudos">Explorar conteúdos <span>→</span></a><a class="btn secondary" href="#exercicios">Testar conhecimentos</a></div>
+  </div>
+  <div class="art" aria-label="Ilustração de formas geométricas e gráficos">
+   <svg class="math-art" viewBox="0 0 420 330" role="img" aria-label="Parábola, triângulo e formas geométricas">
+    <g fill="none" stroke="#fff" stroke-width="3" opacity=".9"><path d="M35 270H385M75 25V290"/><path d="M75 245 Q210 -45 345 245" stroke="#765da8" stroke-width="7"/><path d="M120 240L220 65L325 240Z" fill="#d8ebdd" stroke="#648b72" stroke-width="5"/><path d="M220 65V240" stroke="#648b72" stroke-dasharray="7 7"/><circle cx="220" cy="65" r="9" fill="#f5dce7" stroke="#a96f8b"/></g>
+    <rect x="18" y="34" width="75" height="48" rx="13" fill="#fff9f0" transform="rotate(-9 18 34)"/><text x="55" y="64" text-anchor="middle" font-family="Poppins" font-size="20" fill="#72589e">x²</text>
+    <circle cx="348" cy="74" r="30" fill="#fff9f0"/><text x="348" y="82" text-anchor="middle" font-family="Poppins" font-size="22" fill="#72589e">π</text>
+    <rect x="292" y="260" width="85" height="45" rx="13" fill="#f5dce7"/><text x="334" y="289" text-anchor="middle" font-family="Poppins" font-size="17" fill="#76516a">a²+b²</text>
+   </svg>
+  </div>
+ </div>
+</section>
+<section id="conteudos">
+ <div class="wrap">
+  <div class="section-head"><span class="kicker">Aprenda por temas</span><h2>Quatro caminhos para explorar</h2><p>Escolha um assunto para começar. Cada conteúdo reúne explicações, fórmulas, exemplos e uma ferramenta para visualizar melhor.</p></div>
+  <div class="cards">
+   <article class="topic-card"><span class="topic-icon">📈</span><h3>Função do 2º grau</h3><p>Entenda a parábola, suas raízes, vértice e gráfico.</p><button data-topic="funcao">Estudar tema →</button></article>
+   <article class="topic-card"><span class="topic-icon">🔺</span><h3>Triângulos</h3><p>Conheça classificações, ângulos e relações métricas.</p><button data-topic="triangulos">Estudar tema →</button></article>
+   <article class="topic-card"><span class="topic-icon">▱</span><h3>Quadriláteros</h3><p>Explore quadrados, retângulos, losangos e trapézios.</p><button data-topic="quadrilateros">Estudar tema →</button></article>
+   <article class="topic-card"><span class="topic-icon">📐</span><h3>Semelhança de triângulos</h3><p>Descubra como comparar figuras e proporções.</p><button data-topic="semelhanca">Estudar tema →</button></article>
+  </div>
+ </div>
+</section>
+<section id="aulas">
+ <div class="wrap">
+  <div class="section-head"><span class="kicker">Sala de estudos</span><h2>Explore cada conteúdo</h2><p>Use as abas para alternar entre os assuntos. Os links abrem atividades interativas no GeoGebra.</p></div>
+  <div class="content-area">
+   <div class="topic-tabs" role="tablist" aria-label="Conteúdos de matemática">
+    <button class="tab" role="tab" aria-selected="true" data-tab="funcao">Função do 2º grau</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="triangulos">Triângulos</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="quadrilateros">Quadriláteros</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="semelhanca">Semelhança</button>
+   </div>
+   <div id="topicContent" class="topic-content" aria-live="polite"></div>
+  </div>
+ </div>
+</section>
+<section id="exercicios">
+ <div class="wrap">
+  <div class="section-head"><span class="kicker">Hora de praticar</span><h2>Teste seus conhecimentos</h2><p>Responda às questões e confira na hora se você acertou. Cada resposta vem acompanhada de uma explicação.</p></div>
+  <div class="exercise-grid" id="quiz">
+   <article class="question" data-answer="b" data-explain="A soma dos ângulos internos de qualquer triângulo é sempre 180°." id="q1"><h3>1. Qual é a soma dos ângulos internos de um triângulo?</h3><div class="answers"><label><input type="radio" name="q1" value="a"> 90°</label><label><input type="radio" name="q1" value="b"> 180°</label><label><input type="radio" name="q1" value="c"> 360°</label></div><p class="feedback" aria-live="polite"></p></article>
+   <article class="question" data-answer="c" data-explain="Na função quadrática, o maior expoente da variável x é 2." id="q2"><h3>2. Qual expressão representa uma função do 2º grau?</h3><div class="answers"><label><input type="radio" name="q2" value="a"> f(x) = 3x + 2</label><label><input type="radio" name="q2" value="b"> f(x) = 5</label><label><input type="radio" name="q2" value="c"> f(x) = x² − 4x + 3</label></div><p class="feedback" aria-live="polite"></p></article>
+   <article class="question" data-answer="a" data-explain="O quadrado possui quatro lados congruentes e quatro ângulos retos." id="q3"><h3>3. Qual característica é sempre verdadeira em um quadrado?</h3><div class="answers"><label><input type="radio" name="q3" value="a"> Quatro lados iguais e quatro ângulos retos</label><label><input type="radio" name="q3" value="b"> Apenas dois lados iguais</label><label><input type="radio" name="q3" value="c"> Não possui lados paralelos</label></div><p class="feedback" aria-live="polite"></p></article>
+   <article class="question" data-answer="b" data-explain="Figuras semelhantes têm ângulos correspondentes iguais e lados correspondentes proporcionais." id="q4"><h3>4. O que acontece em triângulos semelhantes?</h3><div class="answers"><label><input type="radio" name="q4" value="a"> Todos os lados precisam ter a mesma medida</label><label><input type="radio" name="q4" value="b"> Ângulos correspondentes iguais e lados proporcionais</label><label><input type="radio" name="q4" value="c"> Precisam ter áreas iguais</label></div><p class="feedback" aria-live="polite"></p></article>
+  </div>
+  <div class="actions"><button class="btn" id="checkQuiz">Corrigir respostas</button><button class="btn secondary" id="resetQuiz">Refazer atividade</button><span id="score" class="muted" aria-live="polite"></span></div>
+ </div>
+</section>
+<section id="cotidiano">
+ <div class="wrap">
+  <div class="section-head"><span class="kicker">Matemática além da sala</span><h2>Ela está em todo lugar</h2><p>Os conceitos matemáticos ajudam a interpretar situações reais e tomar decisões no dia a dia.</p></div>
+  <div class="cards">
+   <article class="topic-card" style="background:var(--blue)"><span class="topic-icon">🏀</span><h3>Esportes</h3><p>Trajetórias de bolas podem ser estudadas por meio de parábolas e funções quadráticas.</p></article>
+   <article class="topic-card" style="background:var(--green)"><span class="topic-icon">🏗️</span><h3>Arquitetura</h3><p>Triângulos e quadriláteros aparecem em estruturas, plantas e projetos de construção.</p></article>
+   <article class="topic-card" style="background:var(--pink)"><span class="topic-icon">🗺️</span><h3>Mapas e escalas</h3><p>A semelhança permite representar lugares grandes em desenhos proporcionais.</p></article>
+   <article class="topic-card" style="background:var(--lilac)"><span class="topic-icon">🎨</span><h3>Arte e design</h3><p>Formas geométricas, simetria e proporções ajudam a criar composições visuais.</p></article>
+  </div>
+ </div>
+</section>
+<section id="sobre">
+ <div class="wrap">
+  <div class="section-head"><span class="kicker">Conheça o projeto</span><h2>Sobre o MathLab</h2></div>
+  <div class="about-grid">
+   <div class="about-card"><h3>Matemática de um jeito mais próximo</h3><p>O MathLab é um projeto educativo criado para reunir explicações claras, exemplos e atividades sobre conteúdos importantes da matemática. A proposta é tornar o aprendizado mais visual, acessível e conectado ao cotidiano.</p></div>
+   <div class="about-card alt"><h3>Como usar?</h3><p>Explore os quatro temas, observe os exemplos resolvidos, experimente as ferramentas externas e finalize respondendo ao teste de conhecimentos.</p><p class="small-note">Projeto escolar • Conteúdo em português</p></div>
+  </div>
+ </div>
+</section>
+</main>
+<footer><div class="wrap footer-inner"><strong>MathLab ✦</strong><span>Aprender, explorar e descobrir.</span><span>Projeto educativo de matemática</span></div></footer>
+<div id="toast" role="status"></div>
+<script>
+const topics={
+funcao:{
+title:"Função do 2º grau",intro:"Uma função do 2º grau, também chamada de função quadrática, é aquela em que a variável x aparece elevada ao quadrado. Seu gráfico é uma curva chamada parábola.",
+formula:"f(x) = ax² + bx + c   (a ≠ 0)",
+sections:`<h3>Elementos importantes</h3><p><b>Coeficientes:</b> a, b e c são números reais. O valor de a determina a concavidade: se a for positivo, a parábola fica voltada para cima; se for negativo, fica voltada para baixo.</p><p><b>Raízes:</b> são os valores de x para os quais f(x) = 0. Podem ser calculadas pela fórmula de Bhaskara.</p><div class="formula">Δ = b² − 4ac</div><div class="formula">x = (−b ± √Δ) / 2a</div><p><b>Vértice:</b> é o ponto de máximo ou mínimo da parábola.</p><div class="formula">xᵥ = −b / 2a &nbsp; | &nbsp; yᵥ = −Δ / 4a</div><div class="example"><strong>Exemplo resolvido</strong>Considere f(x) = x² − 4x + 3. Temos a = 1, b = −4 e c = 3. O discriminante é Δ = (−4)² − 4·1·3 = 4. Assim, as raízes são x = 1 e x = 3. A parábola tem concavidade para cima.</div>`,
+visual:`<div class="visual-box"><h3>Visualizando a parábola</h3><svg viewBox="0 0 420 260" role="img" aria-label="Gráfico ilustrativo de uma parábola"><g stroke="#d8d1e5" stroke-width="1"><path d="M30 30V230M80 30V230M130 30V230M180 30V230M230 30V230M280 30V230M330 30V230M380 30V230M30 80H390M30 130H390M30 180H390M30 230H390"/></g><path d="M30 130H395M210 20V240" stroke="#766c83" stroke-width="2"/><path d="M80 35 Q210 330 340 35" fill="none" stroke="#8066b5" stroke-width="5" stroke-linecap="round"/><circle cx="210" cy="205" r="6" fill="#d68eaa"/><text x="395" y="120" font-size="12" fill="#716d79">x</text><text x="220" y="24" font-size="12" fill="#716d79">y</text></svg><p class="small-note">Esquema ilustrativo: a forma da parábola depende dos coeficientes.</p></div>`,
+link:"https://www.geogebra.org/search/funcao%20quadratica%20parabola",linkText:"Explorar parábolas no GeoGebra"
+},
+triangulos:{
+title:"Triângulos",intro:"Triângulos são polígonos formados por três lados, três vértices e três ângulos internos. São classificados de acordo com os lados ou com os ângulos.",
+formula:"Soma dos ângulos internos = 180°",
+sections:`<h3>Classificação pelos lados</h3><p><b>Equilátero:</b> três lados iguais. <b>Isósceles:</b> dois lados iguais. <b>Escaleno:</b> três lados com medidas diferentes.</p><h3>Classificação pelos ângulos</h3><p><b>Acutângulo:</b> três ângulos agudos. <b>Retângulo:</b> um ângulo reto (90°). <b>Obtusângulo:</b> um ângulo obtuso (maior que 90°).</p><div class="formula">Área = (base × altura) / 2</div><div class="example"><strong>Exemplo resolvido</strong>Um triângulo tem base de 10 cm e altura de 6 cm. Sua área é A = (10 × 6) / 2 = 30 cm². Lembre-se: a altura é perpendicular à base escolhida.</div><h3>Teorema de Pitágoras</h3><p>Em um triângulo retângulo, o quadrado da hipotenusa é igual à soma dos quadrados dos catetos.</p><div class="formula">a² = b² + c²</div>`,
+visual:`<div class="visual-box"><h3>Partes de um triângulo</h3><svg viewBox="0 0 420 250" role="img" aria-label="Triângulo com base e altura indicadas"><path d="M65 210L350 210L225 35Z" fill="#d8ebdd" stroke="#648b72" stroke-width="4"/><path d="M225 35V210" stroke="#8066b5" stroke-width="3" stroke-dasharray="7 6"/><path d="M225 196H239
+V210" fill="none" stroke="#8066b5" stroke-width="2"/>
+<text x="195" y="128" fill="#8066b5" font-size="16">altura</text>
+<text x="190" y="235" fill="#34313d" font-size="15">base</text>
+<text x="48" y="220" fill="#34313d" font-size="14">A</text>
+<text x="354" y="220" fill="#34313d" font-size="14">B</text>
+<text x="225" y="23" fill="#34313d" font-size="14">C</text>
+</svg></div>`,
+link:"https://www.geogebra.org/search/triangulos%20geometria",
+linkText:"Investigar triângulos no GeoGebra"
+},
+quadrilateros:{
+title:"Quadriláteros",
+intro:"Quadriláteros são polígonos que possuem quatro lados, quatro vértices e quatro ângulos. A soma de seus ângulos internos é sempre 360°.",
+formula:"Soma dos ângulos internos = 360°",
+sections:`<h3>Principais tipos</h3>
+<p><b>Quadrado:</b> quatro lados iguais e quatro ângulos retos. <b>Retângulo:</b> lados opostos iguais e quatro ângulos retos.</p>
+<p><b>Losango:</b> quatro lados iguais; ângulos opostos iguais. <b>Paralelogramo:</b> lados opostos paralelos e iguais. <b>Trapézio:</b> possui um par de lados paralelos.</p>
+<h3>Fórmulas de área</h3>
+<div class="formula">Quadrado: A = lado²</div><br>
+<div class="formula">Retângulo: A = base × altura</div><br>
+<div class="formula">Paralelogramo: A = base × altura</div><br>
+<div class="formula">Trapézio: A = (B + b) × h / 2</div>
+<div class="example"><strong>Exemplo resolvido</strong>Um retângulo tem 8 cm de comprimento e 5 cm de largura. A área é A = 8 × 5 = 40 cm².</div>`,
+visual:`<div class="visual-box"><h3>Alguns quadriláteros</h3>
+<svg viewBox="0 0 420 230" role="img" aria-label="Ilustrações de quadrado, retângulo, losango e trapézio">
+<rect x="20" y="55" width="82" height="82" rx="2" fill="#dcd2f5" stroke="#8066b5" stroke-width="3"/>
+<rect x="125" y="72" width="115" height="65" fill="#f5dce7" stroke="#a96f8b" stroke-width="3"/>
+<path d="M300 40L350 95L300 150L250 95Z" fill="#d8ebdd" stroke="#648b72" stroke-width="3"/>
+<path d="M30 180L95 180L82 220L43 220Z" fill="#d8eaf5" stroke="#64849b" stroke-width="3"/>
+<text x="61" y="158" text-anchor="middle" font-size="13" fill="#34313d">Quadrado</text>
+<text x="182" y="158" text-anchor="middle" font-size="13" fill="#34313d">Retângulo</text>
+<text x="300" y="173" text-anchor="middle" font-size="13" fill="#34313d">Losango</text>
+<text x="64" y="230" text-anchor="middle" font-size="13" fill="#34313d">Trapézio</text>
+</svg></div>`,
+link:"https://www.geogebra.org/search/quadrilateros",
+linkText:"Explorar quadriláteros no GeoGebra"
+},
+semelhanca:{
+title:"Semelhança de triângulos",
+intro:"Dois triângulos são semelhantes quando possuem a mesma forma: seus ângulos correspondentes são iguais e seus lados correspondentes são proporcionais. Eles não precisam ter o mesmo tamanho.",
+formula:"Lados correspondentes: a/a' = b/b' = c/c'",
+sections:`<h3>Casos de semelhança</h3>
+<p><b>AA (Ângulo–Ângulo):</b> dois ângulos correspondentes iguais garantem a semelhança.</p>
+<p><b>LAL (Lado–Ângulo–Lado):</b> dois pares de lados proporcionais e o ângulo entre eles igual.</p>
+<p><b>LLL (Lado–Lado–Lado):</b> os três pares de lados correspondentes proporcionais.</p>
+<div class="example"><strong>Exemplo resolvido</strong>Um triângulo tem lados 3, 4 e 5 cm. Outro tem lados 6, 8 e 10 cm. Como cada lado do segundo é o dobro do correspondente no primeiro, a razão de semelhança é 2. Os triângulos são semelhantes.</div>
+<h3>Onde usamos?</h3>
+<p>Em mapas, maquetes, fotografias ampliadas, projetos de arquitetura e para estimar alturas ou distâncias sem medir diretamente.</p>`,
+visual:`<div class="visual-box"><h3>Mesma forma, tamanhos diferentes</h3>
+<svg viewBox="0 0 420 245" role="img" aria-label="Dois triângulos semelhantes em tamanhos diferentes">
+<path d="M35 190L125 190L80 100Z" fill="#dcd2f5" stroke="#8066b5" stroke-width="3"/>
+<path d="M190 205L370 205L280 25Z" fill="#f5dce7" stroke="#a96f8b" stroke-width="3"/>
+<text x="80" y="220" text-anchor="middle" font-size="14" fill="#34313d">Pequeno</text>
+<text x="280" y="230" text-anchor="middle" font-size="14" fill="#34313d">Ampliado</text>
+<text x="80" y="88" text-anchor="middle" font-size="13" fill="#8066b5">Ângulos iguais</text>
+</svg></div>`,
+link:"https://www.geogebra.org/search/semelhanca%20de%20triangulos",
+linkText:"Visualizar semelhança no GeoGebra"
+}
+};
+
+function renderTopic(key){
+ const t=topics[key]||topics.funcao;
+ document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===key)));
+ document.getElementById("topicContent").innerHTML=`<h2>${t.title}</h2><p>${t.intro}</p><div class="formula">${t.formula}</div><div class="two-col"><div>${t.sections}</div><div>${t.visual}<a class="geolink" href="${t.link}" target="_blank" rel="noopener noreferrer">${t.linkText} ↗</a><p class="small-note">O GeoGebra é uma ferramenta externa. O link abre em uma nova aba.</p></div></div>`;
+}
+
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>renderTopic(b.dataset.tab)));
+
+document.querySelectorAll("[data-topic]").forEach(b=>b.addEventListener("click",()=>{
+ renderTopic(b.dataset.topic);
+ document.getElementById("aulas").scrollIntoView({behavior:"smooth"});
+}));
+
+renderTopic("funcao");
+
+const menuBtn=document.getElementById("menuBtn"),nav=document.getElementById("mainNav");
+
+menuBtn.addEventListener("click",()=>{
+ const open=nav.classList.toggle("open");
+ menuBtn.setAttribute("aria-expanded",String(open));
+});
+
+nav.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{
+ nav.classList.remove("open");
+ menuBtn.setAttribute("aria-expanded","false");
+}));
+
+document.getElementById("checkQuiz").addEventListener("click",()=>{
+ let score=0,answered=0;
+
+ document.querySelectorAll(".question").forEach(q=>{
+  const chosen=q.querySelector("input:checked");
+  const fb=q.querySelector(".feedback");
+
+  if(!chosen){
+   fb.textContent="Escolha uma alternativa para esta questão.";
+   fb.className="feedback bad";
+   return;
+  }
+
+  answered++;
+
+  if(chosen.value===q.dataset.answer){
+   score++;
+   fb.textContent="Correto! "+q.dataset.explain;
+   fb.className="feedback good";
+  }else{
+   fb.textContent="Ainda não. "+q.dataset.explain;
+   fb.className="feedback bad";
+  }
+ });
+
+ document.getElementById("score").textContent=`Resultado: ${score} de 4 acertos (${answered} respondidas).`;
+});
+
+document.getElementById("resetQuiz").addEventListener("click",()=>{
+ document.querySelectorAll(".question").forEach(q=>{
+  q.querySelectorAll("input").forEach(i=>i.checked=false);
+  const f=q.querySelector(".feedback");
+  f.textContent="";
+  f.className="feedback";
+ });
+
+ document.getElementById("score").textContent="";
+});
+
+const sections=[...document.querySelectorAll("main section[id]")];
+const links=[...nav.querySelectorAll("a")];
+
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{
+ if(e.isIntersecting){
+  links.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+e.target.id));
+ }
+}),{rootMargin:"-35% 0px -55% 0px"});
+
+sections.forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>
